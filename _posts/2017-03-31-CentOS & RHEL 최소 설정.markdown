@@ -1,6 +1,8 @@
 ---
-title: CentOS & RHEL 최소 설정
 layout: post
+title:  "CentOS & RHEL 최소 설정"
+date:   2017-03-31 18:15:55 +0900
+categories: jekyll update
 ---
 
 - 작업 순서
