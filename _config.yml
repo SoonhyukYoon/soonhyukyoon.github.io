@@ -28,10 +28,10 @@ gems:
   - jekyll-archives
   - jekyll-paginate
   - jekyll-sitemap
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - Rakefile
+#exclude:
+#  - Gemfile
+#  - Gemfile.lock
+#  - Rakefile
 
 # Build settings
 markdown: kramdown
