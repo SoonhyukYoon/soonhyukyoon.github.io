@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "CentOS & RHEL 최소 설정"
-date:  2017-03-31
+date:  2016-03-31
 categories:
 - OS
 tags:
