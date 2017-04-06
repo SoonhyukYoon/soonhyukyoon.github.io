@@ -59,4 +59,4 @@ jekyll-archives:
   permalinks:
     category: /categories/:name/
 
-theme: jekyll-whiteglass
+theme: jekyll-theme-slate
