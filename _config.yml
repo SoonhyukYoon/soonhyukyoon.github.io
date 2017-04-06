@@ -32,12 +32,6 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - Rakefile
-  - README.md
-  - LICENSE.txt
-  - CHANGELOG.md
-  - jekyll-whiteglass.gemspec
-  - screenshot.png
-  - vendor
 
 # Build settings
 markdown: kramdown
