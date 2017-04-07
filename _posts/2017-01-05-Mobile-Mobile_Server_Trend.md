@@ -8,6 +8,8 @@ tags:
 - RabbitMQ
 published: true
 ---
+*회사에서 미션을 받아 가트너 10대 전략 기술 옆에 모바일 Backend 분야에 트렌드 환경을 한번 그려보았다*
+
 <img src="/mobile_server_trend.png" />
 
 ### Mobile Message Transfer

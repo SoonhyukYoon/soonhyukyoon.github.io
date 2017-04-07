@@ -90,11 +90,11 @@ published: true
 
 ### 이렇게 구성해보았다
 
-* 아키텍처 컨셉1
+1. 아키텍처 컨셉1
 
 <img src="/rwms1.png" />
 
-* 아키텍처 컨셉2: 요청 부터 응답까지
+2. 아키텍처 컨셉2: 요청 부터 응답까지
 
 <img src="/rwms2.png" />
 
@@ -116,7 +116,7 @@ published: true
       
       3) RabbitMQ가 Queue를 구독하는 ‘Consumers’(사용자-모바일/PC 웹 브라우저/웹앱)에게 메시지를 전달한다.
 
-* 아키텍처 컨셉3: RabbitMQ 활용
+3. 아키텍처 컨셉3: RabbitMQ 활용
 
 <img src="/rwms3.png" />
 
@@ -130,7 +130,7 @@ published: true
       
       * 일정 시간 이후 메시지 수신이 없나면 비동기로 마지막 시점 이후 메시지 데이터 Sync를 서버에서 받는다.
 
-* 아키텍처 컨셉4: Topic Exchange
+4. 아키텍처 컨셉4: Topic Exchange
 
    - Topic Exchange 는 메시지를 이미 Exchange에 등록된 큐 중에서 ‘Routing Key’나 ‘Routing Key Pattern’이 매칭되는 경우 전달한다. 보통 Multicast 라우팅에 많이 쓰인다.
    
@@ -156,7 +156,7 @@ published: true
 
    - 이러한 메시징 아키텍처 구성은 STOMP 프로토콜 자체가 Topic또는 Queue에 대한 Subscribe를 선택하여 접속하는 것을 지원하기 때문에 가능하다. 메시지 전문에서 JSON Body를 제외한 상위 영역을 헤더라고 정의하는데, ‘/topic/~’, ‘/queue/~’로 시작하는 주소를 STOMP에서는 ‘destination’이라고 정의하는 헤더에 설정해야 한다.
 
-* 응용 레벨
+5. 응용 레벨
 
 <img src="/rwms4.png" />
 
