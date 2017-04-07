@@ -6,6 +6,9 @@ categories:
 - MQ
 tags:
 - RabbitMQ
+- WebSocket
+- Stomp
+- Mobile Web Messaging
 published: true
 ---
 *작성자가 직접 수행한 의미있는 아키텍처 설계 및 구축 작업을 간략히 소개함*
