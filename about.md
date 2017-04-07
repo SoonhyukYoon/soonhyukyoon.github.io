@@ -3,6 +3,7 @@ layout: page
 title: "About"
 permalink: /about/
 ---
+<img src="/profile.jpg" width="350" height="400" />
 # 윤순혁
 - Software Architecture
 - LG CNS Co., Ltd. 부책임 CONSULTANT

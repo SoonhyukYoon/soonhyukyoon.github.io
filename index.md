@@ -6,3 +6,5 @@ layout: home
 ---
 
 ### 이곳은 기술 메모와 작업 이력 관리를 위한 개인 블로그 입니다. 
+
+<script>window.location=/archives/</script>
