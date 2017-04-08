@@ -46,27 +46,35 @@ published: true
 * 다운로드 및 컴파일
 
   ```shell
-  [root] mkdir -p /usr/local/erlang && cd /usr/local/erlang
+  [root] mkdir -p /usr/local/erlang_inst && cd /usr/local/erlang_inst
   [root] wget http://erlang.org/download/otp_src_18.3.tar.gz
   [root] tar -zxvf otp_src_18.3.tar.gz
   [root] cd otp_src_18.3
-  [root]
+  [root] ./configure
+  [root] make && make install
+  # 컴파일 로그 잘 확인한 다음 설치 확인
+  [root] erl
   ```
 
 * /etc/profile 설정
 
    ```shell
+   [root] vi /etc/profile
    ## erlang 추가
-   export ERL_HOME=/usr/local/erlang
+   export ERL_HOME=/usr/local/lib/erlang
    export PATH=$PATH:$ERL_HOME/bin
+   (저장 후 적용)
+   [root] source /etc/profile
    ```
-
 
 2. RabbitMQ 설치
 
 * 다운로드
 
    ```shell
-   [root] mkdir -p /engn001/rabbitmq/
+   [root] mkdir -p /engn001/rabbitmq/ && cd /engn001/rabbitmq
+   [root] wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.5/rabbitmq-server-generic-unix-3.6.5.tar.xz
+   [root] tar -xvf rabbitmq-server-generic-unix-3.6.5.tar.xz
+   [root] cd rabbitmq_server-3.6.5
    ```
    
