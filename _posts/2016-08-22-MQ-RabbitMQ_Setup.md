@@ -56,7 +56,7 @@ published: true
   [root] erl
   ```
 
-* /etc/profile 설정
+2. /etc/profile 설정
 
    ```shell
    [root] vi /etc/profile
@@ -67,14 +67,210 @@ published: true
    [root] source /etc/profile
    ```
 
-2. RabbitMQ 설치
+### RabbitMQ 설치
 
-* 다운로드
+1. 다운로드 및 압축해제
 
    ```shell
-   [root] mkdir -p /engn001/rabbitmq/ && cd /engn001/rabbitmq
-   [root] wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.5/rabbitmq-server-generic-unix-3.6.5.tar.xz
-   [root] tar -xvf rabbitmq-server-generic-unix-3.6.5.tar.xz
-   [root] cd rabbitmq_server-3.6.5
+   [rabbitmq] mkdir -p /engn001/rabbitmq/ && cd /engn001/rabbitmq
+   [rabbitmq] wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.5/rabbitmq-server-generic-unix-3.6.5.tar.xz
+   [rabbitmq] tar -xvf rabbitmq-server-generic-unix-3.6.5.tar.xz
+   [rabbitmq] chown rabbitmq.rabbitmq rabbitmq_server-3.6.5
+   [rabbitmq] cd rabbitmq_server-3.6.5
    ```
-   
+
+2. 환경설정
+
+*간단한 환경설정 예시*
+
+* ~/sbin/rabbitmq-defaults
+
+```shell
+vi /engn001/rabbitmq/rabbitmq_server-3.6.5/sbin/rabbitmq-defaults
+
+# 아래의 부분을 편집하고 저장
+### next line potentially updated in package install steps
+
+## RABBIT_HOME 재정의
+RABBITMQ_HOME=/engn001/rabbitmq/rabbitmq_server-3.6.5
+
+SYS_PREFIX=${RABBITMQ_HOME}
+
+### next line will be updated when generating a standalone release
+ERL_DIR=
+
+CLEAN_BOOT_FILE=start_clean
+SASL_BOOT_FILE=start_sasl
+
+if [ -f "${RABBITMQ_HOME}/erlang.mk" ]; then
+    # RabbitMQ is executed from its source directory. The plugins
+    # directory and ERL_LIBS are tuned based on this.
+    RABBITMQ_DEV_ENV=1
+fi
+
+## Set default values
+
+BOOT_MODULE="rabbit"
+
+CONFIG_FILE=${SYS_PREFIX}/etc/rabbitmq/rabbitmq
+
+## 상용 레벨에서는 로그와 DB 경로는 별도의 파티션으로 관리되는 것이 좋다##
+LOG_BASE=${SYS_PREFIX}/var/log/rabbitmq
+MNESIA_BASE=${SYS_PREFIX}/var/lib/rabbitmq/mnesia
+
+ENABLED_PLUGINS_FILE=${SYS_PREFIX}/etc/rabbitmq/enabled_plugins
+
+PLUGINS_DIR="${RABBITMQ_HOME}/plugins"
+
+CONF_ENV_FILE=${SYS_PREFIX}/etc/rabbitmq/rabbitmq-env.conf
+
+## Thread Pool 설정 (기본값)
+IO_THREAD_POOL_SIZE=64
+
+## Node 이름 (반드시 '@' 뒤에는 Hostname)
+NODENAME=node1@MY_HOSTNAME
+```
+
+* ~/etc/rabbitmq/enabled_plugins
+
+```shell
+vi /engn001/rabbitmq/rabbitmq_server-3.6.5/etc/rabbitmq/enabled_plugins
+
+# 아래와 같이 편집하고 저장
+[rabbitmq_management,rabbitmq_management_agent,rabbitmq_management_visualiser].
+```
+
+* ~/etc/rabbitmq/rabbitmq.config
+
+```shell
+cd ./etc/rabbitmq/
+wget --no-check-certificate https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/stable/docs/rabbitmq.config.example
+cp rabbitmq.config.example rabbitmq.config
+vi rabbitmq.config
+
+# 아래와 같은 부분을 편집하고 저장 (편집시 ',' 문자에 주의한다. 마지막 속성 끝에 ','이 붙지 않도록 주의)
+
+   %% To listen on a specific interface, provide a tuple of {IpAddress, Port}.
+   %% For example, to listen only on localhost for both IPv4 and IPv6:
+   %%
+   %% {tcp_listeners, [{"127.0.0.1", 5672},
+   %%                  {"::1",       5672}]},
+   %% Listen
+   {tcp_listeners, [{"0.0.0.0", 5672}]},
+
+(중간 생략)
+
+   %% Log levels (currently just used for connection logging).
+   %% One of 'debug', 'info', 'warning', 'error' or 'none', in decreasing
+   %% order of verbosity. Defaults to 'info'.
+   %%
+   %% {log_levels, [{connection, info}, {channel, info}]},
+   %% 로그 레벨 설정
+   {log_levels, [{connection, warning}, {channel, warning}]},
+
+(중간 생략)
+
+   %% Set the max permissible number of channels per connection.
+   %% 0 means "no limit".
+   %%
+   %% {channel_max, 128},
+   %% 최대 Connection Channel 값
+   {channel_max, 128},
+
+(중간 생략)
+
+   %% Customising Socket Options.
+   %%
+   %% See (http://www.erlang.org/doc/man/inet.html#setopts-2) for
+   %% further documentation.
+   %%
+   %% {tcp_listen_options, [{backlog,       128},
+   %%                       {nodelay,       true},
+   %%                       {exit_on_close, false}]},
+   %% TCP Socket 기본 설정
+   {tcp_listen_options, [{backlog,       1024},
+                         {nodelay,       true}]},
+
+(중간생략)
+
+   %% Alternatively, we can set a limit (in bytes) of RAM used by the node.
+   %%
+   %% {vm_memory_high_watermark, {absolute, 1073741824}},
+   %%
+   %% Or you can set absolute value using memory units.
+   %%
+   %% {vm_memory_high_watermark, {absolute, "1024M"}},
+   %%
+   %% Supported units suffixes:
+   %%
+   %% k, kiB: kibibytes (2^10 bytes)
+   %% M, MiB: mebibytes (2^20)
+   %% G, GiB: gibibytes (2^30)
+   %% kB: kilobytes (10^3)
+   %% MB: megabytes (10^6)
+   %% GB: gigabytes (10^9)
+   %% Erlang VM 메모리 사용 한계 설정 (설치 서버 상황에 따라 다르게 설정 필요)
+   {vm_memory_high_watermark, {absolute, "1024M"}},
+
+(중간생략)
+
+   %% Set disk free limit (in bytes). Once free disk space reaches this
+   %% lower bound, a disk alarm will be set - see the documentation
+   %% listed above for more details.
+   %%
+   %% {disk_free_limit, 50000000},
+   %%
+   %% Or you can set it using memory units (same as in vm_memory_high_watermark)
+   %% {disk_free_limit, "50MB"},
+   %% {disk_free_limit, "50000kB"},
+   %% {disk_free_limit, "2GB"},
+   %% Disk 작성되는 내장 DB 사이즈
+   {disk_free_limit, "2GB"}
+```
+
+* iptables
+
+```shell
+vi /etc/sysconfig/iptables
+(iptables 를 사용하고 있다면 아래의 설정 추가)
+
+# RabbitMQ
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 5672 -j ACCEPT
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 15672 -j ACCEPT
+
+[root] service iptables restart
+```
+
+3. 실행
+
+```shell
+cd /engn001/rabbitmq/rabbitmq_server-3.6.5/sbin
+(Daemon 실행)
+./rabbitmq-server -detached
+```
+
+4. 상태 확인
+
+```shell
+(/engn001/rabbitmq/rabbitmq_server-3.6.5/sbin)
+./rabbitmqctl status
+```
+
+* 로그
+   - $RABBIT_HOME/var/log/rabbitmq/node1@MY_HOSTNAME.log
+
+5. Management Console
+
+*RabbitMQ의 Queue 구성 및 모니터링의 편의를 위한 구성*
+
+* Management Console 계정 추가
+
+```shell
+(/engn001/rabbitmq/rabbitmq_server-3.6.5/sbin)
+./rabbitmqctl add_user admin admin
+./rabbitmqctl set_user_tags admin administrator
+```
+
+* 브라우저에서 서버IP:15672 로 접속한 다음 로그인 해본다.
+
+<img src="/rabbitmq_console_home.png" />
