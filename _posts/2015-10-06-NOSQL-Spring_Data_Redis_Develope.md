@@ -15,6 +15,7 @@ published: true
 * Maven Project 환경을 가정한다.
 
 1. pom.xml의 dependency에 라이브러리 의존 추가
+
 ```xml
 <!-- Spring Data Redis : Server Type -->
 <dependency>
@@ -28,6 +29,7 @@ published: true
     <version>1.7.5.RELEASE</version>
 </dependency>
 ```
+
 *라이브러리 버전은 순전히 예시이며 실제 구성시 Redis 버전 및 Spring Framework 버전의 의존을 명확히 확인하여 적용한다.*
 
 만약에 당장 Redis 서버를 구성하기는 어렵고 당장 테스트한번 해보고 싶다면 좀 오래되었기는 했지만 <a href="https://github.com/kstyrc/embedded-redis">Embedded Redis</a>서버 라이브러리 의존을 추가하여 Java 코드를 통해 Redis 서버를 로컬에서 실행해볼 수 있다.
@@ -48,28 +50,43 @@ published: true
 *각 속성에 대한 설명은 주석 참조 (어디까지나 '간단 개발'을 위한 예시이다)*
 
 ```xml
-	<!--=======================================================================
-    = Spring Data Redis (Jedis Wrapper) 설정
-    ==========================================================================-->
+<?xml version="1.0" encoding="UTF-8"?>
 
-	<!--
-		Redis Client
-	-->
-	<bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-		<property name="hostName" value="127.0.0.1" /> <!-- Redis IP -->
-		<property name="port" value="6379" /> <!-- Redis Port -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd 
+	 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	 http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+	 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+<!--=======================================================================
+= Spring Data Redis (Jedis Wrapper) 설정
+==========================================================================-->
+
+<!--
+	Redis Client
+-->
+  <bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    <property name="hostName" value="127.0.0.1" /> <!-- Redis IP -->
+    <property name="port" value="6379" /> <!-- Redis Port -->
 <!-- 		<property name="password" value="guest" /> 패스워드가 있을 경우 주석 해제 및 설정 -->
-		<property name="timeout" value="5000" /> <!-- Connection Timeout -->
-		<property name="usePool" value="true" /> <!-- Connection Pool 사용 여부 -->
-		<property name="poolConfig">
-			<bean class="redis.clients.jedis.JedisPoolConfig">
-				<property name="maxTotal" value="5" /> <!-- 최대 Connection Pool 사이즈 -->
-				<property name="maxWaitMillis" value="10000" /> <!-- Connection Pool 최대 대기 시간 -->
-			</bean>
-		</property>
-	</bean>
-    <!-- 만약에 Sentinel을 이용한 이중화 구성을 시도할 경우 아래 설정을 참고하자 (두 대의 Sentinel 예시)
-	<bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    <property name="timeout" value="5000" /> <!-- Connection Timeout -->
+    <property name="usePool" value="true" /> <!-- Connection Pool 사용 여부 -->
+    <property name="poolConfig">
+      <bean class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="5" /> <!-- 최대 Connection Pool 사이즈 -->
+        <property name="maxWaitMillis" value="10000" /> <!-- Connection Pool 최대 대기 시간 -->
+      </bean>
+    </property>
+  </bean>
+  <!-- 만약에 Sentinel을 이용한 이중화 구성을 시도할 경우 아래 설정을 참고하자 (두 대의 Sentinel 예시)
+  <bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
 		<constructor-arg name="sentinelConfig">
 			<bean class="org.springframework.data.redis.connection.RedisSentinelConfiguration">
 				<property name="master">
@@ -181,7 +198,7 @@ published: true
 		<!-- Cache 만료 시간: 초 -->
 		<constructor-arg name="expiration" value="60" />
 	</bean>
-
+</beans>
 ```
 
 * RedisCache.prefix 속성: Redis에 저장되는 Cache 데이터들의 Key 중복 위험을 막기 위해 Cache Key앞에 붙이는 Group 구분자. 포스트 작성자는   Cache name + “:” 값으로 설정할 것을 권장한다.
@@ -283,9 +300,9 @@ public class CacheServiceImpl implements CacheService {
 
 4. 테스트는 Controller 개발 또는 Mock 등을 통해 수행한다.
 
-0. 기타: 테스트를 위한 로컬에서 Embedded Redis 실행
+5. 기타: 테스트를 위한 로컬에서 Embedded Redis 실행
 
-'1번' 과정에서 Embedded Redis 라이브러리 의존을 추가했다면 아래와 같이 Java를 개발하여 실행 가능하다.
+* '1번' 과정에서 Embedded Redis 라이브러리 의존을 추가했다면 아래와 같이 Java를 개발하여 실행 가능하다.
 
 * 주의: Embedded Redis 라이브러리 원리는 linux/windows redis 파일을 내장하고 있다가 임시 경로에 복사하고 실행하는 Java Process Wrapper이다. 따라서 Java 프로그램만 Kill할 경우 Redis 프로세스는 수동으로 Kill 해야한다. 그러니 Redis 정지도 함수 호출을 통해 정지한다.*
 
