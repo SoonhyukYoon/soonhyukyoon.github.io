@@ -165,7 +165,7 @@ published: true
 
    - Spring Integration AMQP를 활용하고, Publish Channel을 설정하여 서버-RabbitMQ간 요청 채널 설정
 
-<img src="/rwms2.png" />
+<img src="/rwms5.png" />
 
    - 모바일 웹 채널 TLS/SSL 접속이 필요하다.
    
