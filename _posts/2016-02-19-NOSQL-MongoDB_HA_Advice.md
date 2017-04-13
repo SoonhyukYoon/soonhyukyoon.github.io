@@ -12,6 +12,7 @@ published: true
 
 ##### 참고 이미지
 <img src="http://www.kthdaisy.com/wp/wp-content/uploads/2014/11/Figure4_ShardReplica-665x395.png" />
+
 *출처: [kthdaisy.com] 포스퀘어가 MongoDB를 선택한 이유 : Auto-Sharding*
 
 * mongos서버는 Cache기반으로 데이터 정보를 유지하고, config 서버는 메타 정보를 유지하는 역할을 한다.

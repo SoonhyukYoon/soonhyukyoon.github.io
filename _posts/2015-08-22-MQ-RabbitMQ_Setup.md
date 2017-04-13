@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "RabbitMQ 설치 및 구성"
-date:  2016-08-22
+date:  2015-08-22
 categories:
 - MQ
 tags:
@@ -241,15 +241,26 @@ vi /etc/sysconfig/iptables
 [root] service iptables restart
 ```
 
-3. 실행
+### 실행
+
+1. 기동/중단
 
 ```shell
 cd /engn001/rabbitmq/rabbitmq_server-3.6.5/sbin
-(Daemon 실행)
+(Daemon 프로세스 실행)
 ./rabbitmq-server -detached
+
+(서버 프로세스 중단)
+./rabbitmqctl stop [pid_file]
+
+(환경 재구성을 위한 RabbitMQ Application 기동/중단)
+./rabbitmqctl start_app
+./rabbitmqctl stop_app
 ```
 
-4. 상태 확인
+2. 상태 확인
+
+* Status
 
 ```shell
 (/engn001/rabbitmq/rabbitmq_server-3.6.5/sbin)
@@ -259,18 +270,20 @@ cd /engn001/rabbitmq/rabbitmq_server-3.6.5/sbin
 * 로그
    - $RABBIT_HOME/var/log/rabbitmq/node1@MY_HOSTNAME.log
 
-5. Management Console
+### Management Console
 
 *RabbitMQ의 Queue 구성 및 모니터링의 편의를 위한 구성*
 
-* Management Console 계정 추가
+1. Management Console 계정 추가
 
 ```shell
 (/engn001/rabbitmq/rabbitmq_server-3.6.5/sbin)
-./rabbitmqctl add_user admin admin
+./rabbitmqctl add_user admin 패스워드
 ./rabbitmqctl set_user_tags admin administrator
 ```
 
-* 브라우저에서 서버IP:15672 로 접속한 다음 로그인 해본다.
+2. 브라우저에서 서버IP:15672 로 접속한 다음 로그인 해본다.
+
+* 등록한 'admin' 계정으로 로그인 수행 후, 메인 콘솔 페이지를 확인할 수 있다.
 
 <img src="/rabbitmq_console_home.png" />
