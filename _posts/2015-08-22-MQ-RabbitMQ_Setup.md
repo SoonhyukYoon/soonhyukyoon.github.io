@@ -30,7 +30,7 @@ published: true
 
 *아래의 설치과정은 Redhat 계열 리눅스 대상 설치를 전제함*
 
-1. Erlang(OTP) 설치
+#### Erlang(OTP) 설치
 
 * OS 기본 설정은 이곳에 작성된 'CentOS & RHEL 최소 설정' 글을 참고하고 여기 추가적인 컴파일 라이브러리 설치
 
@@ -56,7 +56,7 @@ yum install glibc glibc-devel make ncurses-devel autoconf libssl-dev
 [root] erl
 ```
 
-2. /etc/profile 설정
+#### /etc/profile 설정
 
 ```shell
 [root] vi /etc/profile
@@ -69,7 +69,7 @@ export PATH=$PATH:$ERL_HOME/bin
 
 ### RabbitMQ 설치
 
-1. 다운로드 및 압축해제
+#### 다운로드 및 압축해제
 
 ```shell
 [rabbitmq] mkdir -p /engn001/rabbitmq/ && cd /engn001/rabbitmq
@@ -79,7 +79,7 @@ export PATH=$PATH:$ERL_HOME/bin
 [rabbitmq] cd rabbitmq_server-3.6.5
 ```
 
-2. 환경설정
+#### 환경설정
 
 *간단한 환경설정 예시*
 
@@ -243,7 +243,7 @@ vi /etc/sysconfig/iptables
 
 ### 실행
 
-1. 기동/중단
+#### 기동/중단
 
 ```shell
 cd /engn001/rabbitmq/rabbitmq_server-3.6.5/sbin
@@ -258,7 +258,7 @@ cd /engn001/rabbitmq/rabbitmq_server-3.6.5/sbin
 ./rabbitmqctl stop_app
 ```
 
-2. 상태 확인
+#### 상태 확인
 
 * Status
 
@@ -274,7 +274,7 @@ cd /engn001/rabbitmq/rabbitmq_server-3.6.5/sbin
 
 *RabbitMQ의 Queue 구성 및 모니터링의 편의를 위한 구성*
 
-1. Management Console 계정 추가
+#### Management Console 계정 추가
 
 ```shell
 (/engn001/rabbitmq/rabbitmq_server-3.6.5/sbin)
@@ -282,7 +282,7 @@ cd /engn001/rabbitmq/rabbitmq_server-3.6.5/sbin
 ./rabbitmqctl set_user_tags admin administrator
 ```
 
-2. 브라우저에서 서버IP:15672 로 접속한 다음 로그인 해본다.
+#### 브라우저에서 서버IP:15672 로 접속한 다음 로그인 해본다.
 
 * 등록한 'admin' 계정으로 로그인 수행 후, 메인 콘솔 페이지를 확인할 수 있다.
 
