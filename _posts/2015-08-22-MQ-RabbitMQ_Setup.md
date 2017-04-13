@@ -34,9 +34,9 @@ published: true
 
 * OS 기본 설정은 이곳에 작성된 'CentOS & RHEL 최소 설정' 글을 참고하고 여기 추가적인 컴파일 라이브러리 설치
 
-   ```shell
-   yum install glibc glibc-devel make ncurses-devel autoconf libssl-dev
-   ```
+```shell
+yum install glibc glibc-devel make ncurses-devel autoconf libssl-dev
+```
 
 * 작성자는 yum으로 erlang 설치를 좋아하지 않으므로 http://www.erlang.org/ 에서 OTP(Java로 따지면 JDK)를 다운받는다.
 
@@ -45,39 +45,39 @@ published: true
 
 * 다운로드 및 컴파일
 
-  ```shell
-  [root] mkdir -p /usr/local/erlang_inst && cd /usr/local/erlang_inst
-  [root] wget http://erlang.org/download/otp_src_18.3.tar.gz
-  [root] tar -zxvf otp_src_18.3.tar.gz
-  [root] cd otp_src_18.3
-  [root] ./configure
-  [root] make && make install
-  # 컴파일 로그 잘 확인한 다음 설치 확인
-  [root] erl
-  ```
+```shell
+[root] mkdir -p /usr/local/erlang_inst && cd /usr/local/erlang_inst
+[root] wget http://erlang.org/download/otp_src_18.3.tar.gz
+[root] tar -zxvf otp_src_18.3.tar.gz
+[root] cd otp_src_18.3
+[root] ./configure
+[root] make && make install
+# 컴파일 로그 잘 확인한 다음 설치 확인
+[root] erl
+```
 
 2. /etc/profile 설정
 
-   ```shell
-   [root] vi /etc/profile
-   ## erlang 추가
-   export ERL_HOME=/usr/local/lib/erlang
-   export PATH=$PATH:$ERL_HOME/bin
-   (저장 후 적용)
-   [root] source /etc/profile
-   ```
+```shell
+[root] vi /etc/profile
+## erlang 추가
+export ERL_HOME=/usr/local/lib/erlang
+export PATH=$PATH:$ERL_HOME/bin
+(저장 후 적용)
+[root] source /etc/profile
+```
 
 ### RabbitMQ 설치
 
 1. 다운로드 및 압축해제
 
-   ```shell
-   [rabbitmq] mkdir -p /engn001/rabbitmq/ && cd /engn001/rabbitmq
-   [rabbitmq] wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.5/rabbitmq-server-generic-unix-3.6.5.tar.xz
-   [rabbitmq] tar -xvf rabbitmq-server-generic-unix-3.6.5.tar.xz
-   [rabbitmq] chown rabbitmq.rabbitmq rabbitmq_server-3.6.5
-   [rabbitmq] cd rabbitmq_server-3.6.5
-   ```
+```shell
+[rabbitmq] mkdir -p /engn001/rabbitmq/ && cd /engn001/rabbitmq
+[rabbitmq] wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.5/rabbitmq-server-generic-unix-3.6.5.tar.xz
+[rabbitmq] tar -xvf rabbitmq-server-generic-unix-3.6.5.tar.xz
+[rabbitmq] chown rabbitmq.rabbitmq rabbitmq_server-3.6.5
+[rabbitmq] cd rabbitmq_server-3.6.5
+```
 
 2. 환경설정
 
