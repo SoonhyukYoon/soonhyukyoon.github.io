@@ -104,7 +104,7 @@ public class CustomSSLConnectionSocketFactory implements FactoryBean<SSLConnecti
 
 #### 설정 (XML)
 
-* 'PoolingHttpClientConnectionManager' Bean 내부의 HTTPS Socket 생성 설정에 위 클래스를 적용한다.
+* 아래는 RestTemplate을 선언한 Spring Context XML 파일이며 'PoolingHttpClientConnectionManager' Bean 내부의 HTTPS Socket 생성 설정에 위 클래스를 적용한다.
    - allowAllHostname: HTTPS 연동시 TLS/SSL 인증서의 모든 Hostname 허용 여부 (true/false)
    - allowSelfSignedCa: HTTPS 연동시 TLS/SSL 사설인증서 허용 여부 (true/false)
 
@@ -114,66 +114,57 @@ public class CustomSSLConnectionSocketFactory implements FactoryBean<SSLConnecti
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!--====================================================================================================
-	= 외부 시스템과 REST 연동을 위한 REST Template 설정 (Apache HttpComponents Wrapper)
-	=====================================================================================================-->
+<!--====================================================================================================
+= 외부 시스템과 REST 연동을 위한 REST Template 설정 (Apache HttpComponents Wrapper)
+=====================================================================================================-->
 
-	<!-- RestTemplate -->
-	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
-		<!--
-			Constructor arguments를 사용안함. Setter로 Request Factory 설정
-			이유: 기본 생성자에서 MVC Annotation Driven의 Message Converter와 동일한(JAXB2, Jackson2)
-			Response Converter를 미리 정의하도록 위임
-		-->
-		<property name="requestFactory">
-			<bean id="httpComponentClientFactory" class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory">
-				<constructor-arg>
-					<bean id="httpClient" factory-bean="httpClientBuilder" factory-method="build" />
-				</constructor-arg>
-			</bean>
-		</property>
-	</bean>
+<!-- RestTemplate -->
+<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+	<property name="requestFactory">
+		<bean id="httpComponentClientFactory" class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory">
+			<constructor-arg><bean id="httpClient" factory-bean="httpClientBuilder" factory-method="build" /></constructor-arg>
+		</bean>
+	</property>
+</bean>
 
-	<!-- HTTP Client Builder -->
-	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder" factory-method="create">
-		<property name="connectionManagerShared" value="true" />
-		<property name="connectionManager">
-			<!-- Connection Pool Manager : PoolingHttpClientConnectionManager 클래스 + 별도 SSL Socket Factory 적용 -->
-			<bean id="connManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager">
-				<constructor-arg name="socketFactoryRegistry">
-					<bean class="org.apache.http.config.Registry">
-						<constructor-arg>
-							<map>
-								<entry key="http">
-									<bean class="org.apache.http.conn.socket.PlainConnectionSocketFactory" factory-method="getSocketFactory" />
-								</entry>
-								<entry key="https">
-									<bean class="package.CustomSSLConnectionSocketFactory">
-										<!-- HTTPS 연동시 TLS/SSL 인증서의 모든 Hostname 허용 여부 -->
-										<property name="allowAllHostname" value="true" />
-										<!-- HTTPS 연동시 TLS/SSL 사설인증서 허용 여부 -->
-										<property name="allowSelfSignedCa" value="true" />
-									</bean>
-								</entry>
-							</map>
-						</constructor-arg>
-					</bean>
-				</constructor-arg>
-				<!-- 각 host(IP와 Port의 조합)당 Connection Pool에 생성가능한 Connection 수 -->
-				<property name="defaultMaxPerRoute" value="10" />
-				<!-- Connection Pool의 수용 가능한 최대 사이즈 -->
-				<property name="maxTotal" value="50" />
-				<!-- 특정 시간 이후 유휴 커넥션 정리 (ms) -->
-				<property name="validateAfterInactivity" value="60000" />
-			</bean>
-		</property>
-	</bean>
+<!-- HTTP Client Builder -->
+<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder" factory-method="create">
+	<property name="connectionManagerShared" value="true" />
+	<property name="connectionManager">
+		<!-- Connection Pool Manager : PoolingHttpClientConnectionManager 클래스 + 별도 SSL Socket Factory 적용 -->
+		<bean id="connManager" class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager">
+			<constructor-arg name="socketFactoryRegistry">
+				<bean class="org.apache.http.config.Registry">
+					<constructor-arg>
+						<map>
+							<entry key="http">
+								<bean class="org.apache.http.conn.socket.PlainConnectionSocketFactory" factory-method="getSocketFactory" />
+							</entry>
+							<entry key="https">
+								<bean class="package.CustomSSLConnectionSocketFactory">
+									<!-- HTTPS 연동시 TLS/SSL 인증서의 모든 Hostname 허용 여부 -->
+									<property name="allowAllHostname" value="true" />
+									<!-- HTTPS 연동시 TLS/SSL 사설인증서 허용 여부 -->
+									<property name="allowSelfSignedCa" value="true" />
+								</bean>
+							</entry>
+						</map>
+					</constructor-arg>
+				</bean>
+			</constructor-arg>
+			<!-- 각 host(IP와 Port의 조합)당 Connection Pool에 생성가능한 Connection 수 -->
+			<property name="defaultMaxPerRoute" value="10" />
+			<!-- Connection Pool의 수용 가능한 최대 사이즈 -->
+			<property name="maxTotal" value="50" />
+			<!-- 특정 시간 이후 유휴 커넥션 정리 (ms) -->
+			<property name="validateAfterInactivity" value="60000" />
+		</bean>
+	</property>
+</bean>
 </beans>
 ```
