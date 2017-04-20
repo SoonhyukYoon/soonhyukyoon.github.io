@@ -422,12 +422,16 @@ published: true
    worker.template.ping_mode=A
    worker.template.ping_timeout=2000
    worker.template.prepost_timeout=2000
-   worker.template.socket_timeout=60
+   # 전체 요청 대기시간 고려 (WAS 응답 Timeout + alpha)
+   worker.template.socket_timeout=90
    worker.template.socket_connect_timeout=2000
    worker.template.socket_keepalive=true
+   # WAS에서 의미있는 응답 대기 (ms) : 파일 업로드 시간이 길 경우 'socket_timeout' 값과 함께 늘려주어야 한다.
+   worker.template.reply_timeout=60000
+   # AJP Connection Timeout과 동일하게 구성
    worker.template.connection_pool_timeout=60
-   worker.template.connect_timeout=10000
-   worker.template.connection_pool_size=50
+   worker.template.connect_timeout=2000
+   worker.template.connection_pool_size=64
    worker.template.recovery_options=7
 
    # Set properties for node_xxxx_01(ajp13)
