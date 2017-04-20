@@ -350,12 +350,22 @@ published: true
    PidFile "logs/xxxxx[_NN]_httpd.pid"
    LockFile "logs/xxxxx[_NN]_accept.lock"
 
-   StartServers        4
-   MaxClients         256
-   MinSpareThreads    128
-   MaxSpareThreads    256
-   ThreadsPerChild     64
-   MaxRequestsPerChild  0
+# event MPM
+# StartServers: initial number of server processes to start
+# MinSpareThreads: minimum number of worker threads which are kept spare
+# MaxSpareThreads: maximum number of worker threads which are kept spare
+# ThreadsPerChild: constant number of worker threads in each server process
+# MaxRequestWorkers: maximum number of worker threads
+# MaxConnectionsPerChild: maximum number of connections a server process serves
+#                         before terminating
+<IfModule mpm_event_module>
+    StartServers             8
+    MinSpareThreads        128
+    MaxSpareThreads        256
+    ThreadsPerChild         64
+    MaxRequestWorkers     1024
+    MaxConnectionsPerChild   0
+</IfModule>
    ```
 
    4) mod_jk.conf 생성
