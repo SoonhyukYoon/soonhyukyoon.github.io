@@ -8,19 +8,19 @@ tags:
 - Comment
 published: true
 ---
-## Example
+#### Example
 - Refactor subsystem X for readability
 - Update getting started documentation
 - Remove deprecated methods
 - Release version 1.0.0
 
-## Bad
+#### Bad
 - Fixed bug with Y
 - Changing behavior of X
 - More fixes for broken stuff
 - Sweet new API methods
 
-## Basic Rule
+#### Basic Rule
 - 50 문자 이내로 간략히 작성
 - 마침표 지양
 - 대문자로 시작
@@ -31,6 +31,6 @@ published: true
   - Refactor subsystem X for readability #1010
   - Refactor subsystem X for readability. Closes #1010
 
-## 참고
+#### 참고
 - http://www.slideshare.net/TarinGamberini/commit-messages-goodpractices
 - http://chris.beams.io/posts/git-commit/
