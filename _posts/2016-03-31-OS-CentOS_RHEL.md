@@ -120,8 +120,10 @@ service sshd restart
 # Bash Setting
 ###########################################################
 set -o vi
-alias ll='ls -alF'  <-- 계정 비중을 생각해서 alias ll='ls -lF' 도 가능
+alias ll='ls -alh'
 alias vi=vim
+alias grep='grep --color'
+alias du='du -h --max-depth=1'
 (root 계정 전용)
 DEFAULT="\[\033[m\]"
 BG_BLUE="\[\033[44m\]"
@@ -135,6 +137,11 @@ export PS1
 ###########################################################
 # Profile Setting
 ###########################################################
+
+export LC_ALL=ko_KR.UTF-8
+export LANG=ko_KR.UTF-8
+
+export LS_COLORS="di=01;31":"fi=01;37":"ex=01;32":"ln=01;36":"so=01;33"
 
 # Add timestamp to .bash_history
 export HISTTIMEFORMAT="%F %T "
