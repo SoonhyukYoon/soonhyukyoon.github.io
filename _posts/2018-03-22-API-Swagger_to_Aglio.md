@@ -66,5 +66,5 @@ published: true
 - Github Page
   - Repository의 'GitHub Pages' 설정
     - 해당 경로에 최종 완성된 HTML 또는 Markdown 파일을 Commit
-    - https://pages.oss.navercorp.com/[User]/[Repository]/[File]
+    - https://[Github Pages Domain]/[User]/[Repository]/[File]
     - Markdown 일 경우 파일명을 'README.md'로 저장하면 파일명을 URL에 넣을 필요 없다.
