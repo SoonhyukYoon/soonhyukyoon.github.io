@@ -30,6 +30,7 @@ published: true
 
 ##### Deploy application
 - 개발 대상 node.js 프로그램 루트에 아래와 같은 작업 추가
+
 - `package.json` 패키지 명세 추가
 ```json
 {
@@ -47,6 +48,7 @@ published: true
 ```
 
 - `.npmignore` 저장소 업로드 예외 파일 목록
+
 ```bash
 .DS_Store
 .git
