@@ -48,8 +48,7 @@ published: true
 ```
 
 - `.npmignore` 저장소 업로드 예외 파일 목록
-
-```bash
+```
 .DS_Store
 .git
 .*.swp
@@ -63,7 +62,7 @@ npm-debug.log
 ```
 
 - 계정 등록
-```bash
+```
 ~$ npm adduser --registry http://NEXUS_HOST/repository/npm-release/
 Username: [계정 입력]
 Password: [패스워드 입력]
@@ -72,22 +71,22 @@ Logged in as [계정] on http://NEXUS_HOST/repository/npm-release/.
 ```
 
 - `.npmrc` 파일에 'authToken' 확인
-```bash
+```
 //NEXUS_HOST/repository/npm-release/:_authToken=TOKEN
 ```
 - Publish (`package.json` 경로에서)
-```bash
+```
 $ npm publish --registry http://NEXUS_HOST/repository/npm-release/
 ```
 
 ##### Usage
 - npm Registry 변경 (`npm-public` of Nexus)
-```bash
+```
 $ npm config set registry http://NEXUS_HOST/repository/npm-public/
 ```
 
 - ~/.npmrc
-```bash
+```
 registry=http://NEXUS_HOST/repository/npm-public/
 ```
 
